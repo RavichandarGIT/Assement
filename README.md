@@ -39,8 +39,8 @@ Sizes are not hardcoded to S, M, L. The application automatically detects whiche
 ## 3. Setup & Run Instructions
 
 ### **Method 1: Direct File Launch**
-1. Open the project directory (`e:\Assignment`).
-2. Double-click [index.html](file:///e:/Assignment/index.html) to open directly in Google Chrome, Microsoft Edge, or Firefox.
+1. Open the project directory.
+2. Double-click `index.html` to open directly in Google Chrome, Microsoft Edge, or Firefox.
 
 ### **Method 2: Static Server (e.g., Python / Node / VS Code Live Server)**
 ```bash

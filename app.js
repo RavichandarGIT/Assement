@@ -535,7 +535,7 @@ function renderCart() {
           <!-- Center Controls -->
           <div class="item-card-center">
             <!-- Grade Dropdown -->
-            <div class="control-field">
+            <div class="control-field grade-field">
               <label for="grade_select_${p.id}">GRADE</label>
               <select class="grade-select" id="grade_select_${p.id}" name="grade_select_${p.id}" data-id="${p.id}" aria-label="Grade selection for ${escapeHtml(p.code)}">
                 <option value="A" ${p.grade === 'A' ? 'selected' : ''}>A</option>
@@ -544,28 +544,33 @@ function renderCart() {
               </select>
             </div>
 
-            <!-- Dynamic Size Inputs Row -->
-            <div class="size-inputs-row">
-              ${productSizes.map(sz => `
-                <div class="control-field">
-                  <label for="input_${p.id}_${sz}">${escapeHtml(sz)}</label>
-                  <input type="number" min="0" id="input_${p.id}_${sz}" name="input_${p.id}_${sz}" aria-label="Quantity for size ${escapeHtml(sz)} of ${escapeHtml(p.code)}" class="num-input size-input" data-id="${p.id}" data-size="${escapeHtml(sz)}" value="${p.sizes[sz] ?? 0}" />
-                </div>
-              `).join('')}
+            <!-- Dynamic Size Inputs Container (Scrollable on small screens) -->
+            <div class="size-inputs-scroll">
+              <div class="size-inputs-row">
+                ${productSizes.map(sz => `
+                  <div class="control-field">
+                    <label for="input_${p.id}_${sz}">${escapeHtml(sz)}</label>
+                    <input type="number" min="0" id="input_${p.id}_${sz}" name="input_${p.id}_${sz}" aria-label="Quantity for size ${escapeHtml(sz)} of ${escapeHtml(p.code)}" class="num-input size-input" data-id="${p.id}" data-size="${escapeHtml(sz)}" value="${p.sizes[sz] ?? 0}" />
+                  </div>
+                `).join('')}
+              </div>
             </div>
 
-            <!-- Multiplication Sign -->
-            <span class="symbol-x">✕</span>
+            <!-- Calculation Group: Sets x Total -->
+            <div class="item-card-calc">
+              <span class="symbol-x" aria-hidden="true">✕</span>
 
-            <!-- Sets Input -->
-            <div class="control-field">
-              <label for="sets_${p.id}">SETS</label>
-              <input type="number" min="1" id="sets_${p.id}" name="sets_${p.id}" aria-label="Sets count for ${escapeHtml(p.code)}" class="num-input sets-input" data-id="${p.id}" value="${p.sets ?? 1}" />
+              <div class="control-field sets-field">
+                <label for="sets_${p.id}">SETS</label>
+                <input type="number" min="1" id="sets_${p.id}" name="sets_${p.id}" aria-label="Sets count for ${escapeHtml(p.code)}" class="num-input sets-input" data-id="${p.id}" value="${p.sets ?? 1}" />
+              </div>
+
+              <span class="symbol-equal" aria-hidden="true">=</span>
+              <div class="total-badge-wrap">
+                <span class="total-label">TOTAL PCS</span>
+                <span class="calculated-total" id="total-${p.id}">${total}</span>
+              </div>
             </div>
-
-            <!-- Equals & Dynamic Calculated Total -->
-            <span class="symbol-equal">=</span>
-            <span class="calculated-total" id="total-${p.id}">${total}</span>
           </div>
 
           <!-- Right Action: Trash Delete Icon -->

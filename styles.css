@@ -509,8 +509,14 @@ select#gradeFilter:focus {
 .item-card-center {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+  justify-content: space-between;
+}
+
+.grade-field {
+  flex-shrink: 0;
 }
 
 .control-field {
@@ -528,6 +534,7 @@ select#gradeFilter:focus {
   font-family: 'Inter', sans-serif;
   letter-spacing: 0.3px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 /* Grade Select Box */
@@ -552,11 +559,21 @@ select#gradeFilter:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-/* Size Quantity Input Boxes */
+/* Scrollable Size Inputs Row */
+.size-inputs-scroll {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding: 2px 0 4px;
+  max-width: 100%;
+}
+
 .size-inputs-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .num-input {
@@ -597,31 +614,63 @@ select#gradeFilter:focus {
   appearance: textfield;
 }
 
+/* Calculation Controls Group */
+.item-card-calc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.sets-field {
+  flex-shrink: 0;
+}
+
 /* Math symbols in Card Body */
 .symbol-x {
-  font-size: 15px;
-  font-weight: 600;
-  color: #64748B;
-  margin: 14px 4px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #94A3B8;
+  margin-top: 14px;
   user-select: none;
 }
 
 .symbol-equal {
-  font-size: 15px;
-  font-weight: 600;
-  color: #64748B;
-  margin: 14px 4px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #94A3B8;
+  margin-top: 14px;
   user-select: none;
+}
+
+.total-badge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: #E2E8F0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  min-width: 58px;
+  margin-top: 4px;
+}
+
+.total-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #475569;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
 }
 
 .calculated-total {
   font-size: 15px;
   font-weight: 700;
   font-family: 'IBM Plex Mono', monospace;
-  color: #1E293B;
-  margin-top: 14px;
-  min-width: 28px;
+  color: #0F172A;
   transition: color 0.2s ease, transform 0.2s ease;
+  line-height: 1;
 }
 
 /* Right Action: Delete Button */
@@ -833,6 +882,16 @@ select#gradeFilter:focus {
 .modal-backdrop.active .ratio-modal {
   transform: translateY(0) scale(1);
   opacity: 1;
+}
+
+.bottom-sheet-handle {
+  display: none;
+  width: 42px;
+  height: 4.5px;
+  background: #CBD5E1;
+  border-radius: 4px;
+  margin: 10px auto 2px;
+  flex-shrink: 0;
 }
 
 .ratio-modal-header {
@@ -1162,37 +1221,608 @@ select#gradeFilter:focus {
   background: transparent;
 }
 
-/* ---------- Responsive Adjustments ---------- */
-@media (max-width: 900px) {
-  .topbar {
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-    padding: 14px;
+/* ============================================================
+   MULTI-DEVICE RESPONSIVE SYSTEM
+   Supports: Large Desktop, Laptop, iPad/Tablet (Landscape & Portrait),
+             and Mobile Phones (iPhone, Android, Foldables)
+   ============================================================ */
+
+/* ---------- 1. Large Desktops & Ultrawide (> 1360px) ---------- */
+@media (min-width: 1361px) {
+  .main-layout {
+    max-width: 1440px;
   }
-  .nav-pills-center {
-    width: 100%;
-    justify-content: center;
+  .catalogue-grid {
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   }
-  .topbar-actions {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
+}
+
+/* ---------- 2. Medium Laptops & Desktops (1025px - 1360px) ---------- */
+@media (min-width: 1025px) and (max-width: 1360px) {
+  .main-layout {
+    padding: 20px 24px 50px;
+  }
+  .catalogue-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
   }
   .item-card-body {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 12px 16px;
+    gap: 14px;
   }
-  .item-card-meta {
+  .item-card-center {
     gap: 10px;
   }
+  .size-inputs-row {
+    gap: 6px;
+  }
+}
+
+/* ---------- 3. Tablets & iPads (641px - 1024px) ---------- */
+@media (max-width: 1024px) {
+  .main-layout {
+    padding: 16px 18px 48px;
+  }
+
+  /* Topbar: 2-tier layout */
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    gap: 12px;
+  }
+
+  .brand {
+    order: 1;
+  }
+
+  .topbar-actions {
+    order: 2;
+    gap: 8px;
+  }
+
+  .nav-pills-center {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .nav-pill {
+    padding: 7px 18px;
+    font-size: 13px;
+  }
+
+  .nav-pill.active::after {
+    bottom: -4px;
+  }
+
+  /* Catalogue Grid: 2 columns on tablets */
+  .catalogue-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* Cart Item Card: 2-tier flexible layout */
+  .item-card-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 14px;
+  }
+
   .item-card-title {
     max-width: 100%;
+    white-space: normal;
   }
+
+  .item-card-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .item-card-center {
+    flex-wrap: wrap;
+    gap: 12px;
+    flex: 1 1 100%;
+    order: 2;
+    padding-top: 8px;
+    border-top: 1px solid #E2E8F0;
+  }
+
+  .item-card-left {
+    order: 1;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .grade-field {
+    order: 1;
+    margin-left: auto;
+  }
+
+  .item-card-right {
+    order: 1;
+  }
+
+  .size-inputs-scroll {
+    width: 100%;
+    order: 2;
+  }
+
+  .item-card-calc {
+    order: 3;
+    width: 100%;
+    justify-content: flex-end;
+    background: #F1F5F9;
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+
+  /* Input Ratio Modal: Centered drawer on tablet */
+  .modal-backdrop {
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+
   .ratio-modal {
+    width: 460px;
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+}
+
+/* ---------- 4. Mobile Devices (<= 640px) ---------- */
+@media (max-width: 640px) {
+  body {
+    font-size: 13px;
+  }
+
+  .main-layout {
+    padding: 10px 10px 40px;
+  }
+
+  /* Compact Native-Feel App Header */
+  .topbar {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .brand-text h1 {
+    font-size: 13.5px;
+  }
+
+  .brand-text .sub {
+    font-size: 9.5px;
+  }
+
+  .logo-icon {
+    padding: 5px;
+  }
+
+  .logo-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Compact Action Buttons */
+  .topbar-actions {
+    gap: 5px;
+  }
+
+  .btn {
+    padding: 6px 9px;
+    font-size: 11.5px;
+    gap: 4px;
+  }
+
+  .topbar-actions .btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  /* Segmented Nav Tabs */
+  .nav-pills-center {
+    display: flex;
+    width: 100%;
+    gap: 4px;
+    margin-top: 4px;
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-pill {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 6px;
+    font-size: 12.5px;
+    gap: 6px;
+  }
+
+  .nav-pill.active::after {
+    display: none; /* Segmented tab replaces underline */
+  }
+
+  .dropdown-popover {
+    right: 0;
+    left: auto;
+    width: 220px;
+    max-width: calc(100vw - 20px);
+  }
+
+  /* Full-width Responsive Toolbar */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+  }
+
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     width: 100%;
   }
+
+  .search-box {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search-box input {
+    width: 100%;
+    min-width: 0;
+    font-size: 13px;
+    padding: 8px 10px 8px 30px;
+  }
+
+  select#gradeFilter {
+    flex-shrink: 0;
+    font-size: 12.5px;
+    padding: 7px 8px;
+  }
+
+  .toolbar-right {
+    width: 100%;
+  }
+
+  #addSelectedToCartBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 9px;
+    font-size: 12.5px;
+    min-height: 40px;
+  }
+
+  #cartActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* 1-Column Fluid Catalogue Grid */
+  .catalogue-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .cat-card {
+    padding: 12px;
+    border-radius: 8px;
+    gap: 10px;
+  }
+
+  .cat-card-top {
+    gap: 10px;
+  }
+
+  .cat-card-top img {
+    width: 58px;
+    height: 74px;
+  }
+
+  .cat-card-title {
+    font-size: 12.5px;
+    padding-right: 24px;
+  }
+
+  .cat-card-checkbox {
+    width: 20px;
+    height: 20px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .btn-add-cat, .btn-in-cart {
+    width: 100%;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  /* Cart Item Card: Clean 3-Tier Mobile Card */
+  .item-card {
+    border-radius: 8px;
+  }
+
+  .item-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 12px;
+    gap: 4px;
+  }
+
+  .item-card-title {
+    max-width: 100%;
+    font-size: 12px;
+    white-space: normal;
+    line-height: 1.35;
+  }
+
+  .item-card-meta {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 11px;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .item-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px 12px 12px;
+    gap: 10px;
+  }
+
+  /* Row 1: Left Thumb + Grade + Delete Button */
+  .item-card-left {
+    order: 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .product-img {
+    width: 40px;
+    height: 52px;
+  }
+
+  .code-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .grade-field {
+    order: 2;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .grade-field label {
+    font-size: 10.5px;
+  }
+
+  .grade-select {
+    height: 32px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .item-card-right {
+    order: 3;
+    margin-left: 8px;
+  }
+
+  .delete-btn {
+    padding: 6px;
+  }
+
+  /* Row 2: Touch-Scrollable Size Inputs */
+  .size-inputs-scroll {
+    order: 4;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px 2px 8px;
+    border-top: 1px dashed #E2E8F0;
+    border-bottom: 1px dashed #E2E8F0;
+    scrollbar-width: thin;
+  }
+
+  .size-inputs-row {
+    display: flex;
+    gap: 6px;
+    min-width: max-content;
+  }
+
+  .num-input {
+    width: 40px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  /* Row 3: Calculation Bar */
+  .item-card-calc {
+    order: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: #F1F5F9;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-top: 2px;
+  }
+
+  .symbol-x, .symbol-equal {
+    margin: 0;
+    font-size: 13px;
+  }
+
+  .sets-field {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sets-field label {
+    margin: 0;
+    font-size: 10px;
+  }
+
+  .total-badge-wrap {
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    margin: 0;
+    padding: 4px 8px;
+  }
+
+  .calculated-total {
+    font-size: 14px;
+  }
+
+  /* Input Ratio Modal: Sleek Mobile Bottom Sheet */
   .modal-backdrop {
     padding: 0;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .ratio-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 88vh;
+    border-radius: 18px 18px 0 0;
+    border-bottom: none;
+    transform: translateY(100%);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .modal-backdrop.active .ratio-modal {
+    transform: translateY(0);
+  }
+
+  .bottom-sheet-handle {
+    display: block;
+  }
+
+  .ratio-modal-header {
+    padding: 10px 16px;
+  }
+
+  .ratio-modal-header h2 {
+    font-size: 14.5px;
+  }
+
+  .ratio-level-bar {
+    padding: 8px 16px;
+  }
+
+  .ratio-modal-body {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .size-ratio-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .size-ratio-input {
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .ratio-modal-footer {
+    padding: 10px 16px 16px;
+    gap: 8px;
+  }
+
+  .btn-reset-ratio, .btn-set-ratio {
+    flex: 1;
+    justify-content: center;
+    padding: 9px;
+    font-size: 12px;
+  }
+
+  /* Column Mapping Modal */
+  .mapping-modal {
+    width: 100%;
+    max-width: 95vw;
+    padding: 16px 14px;
+    border-radius: 12px;
+  }
+
+  .map-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .map-row label {
+    width: 100%;
+    font-size: 11.5px;
+  }
+
+  .map-row select {
+    width: 100%;
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .mapping-actions {
+    gap: 8px;
+  }
+
+  .mapping-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ---------- 5. Ultra-Narrow Devices (<= 380px) ---------- */
+@media (max-width: 380px) {
+  .brand-text .sub {
+    display: none;
+  }
+
+  .topbar-actions .btn {
+    padding: 5px 6px;
+    font-size: 11px;
+  }
+
+  .nav-pill {
+    padding: 6px 4px;
+    font-size: 11.5px;
+  }
+
+  .size-ratio-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .num-input {
+    width: 36px;
+    height: 32px;
+    font-size: 12px;
   }
 }
